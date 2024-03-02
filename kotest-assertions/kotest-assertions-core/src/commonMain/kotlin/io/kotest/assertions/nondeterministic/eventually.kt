@@ -255,7 +255,9 @@ private class EventuallyControl(val config: EventuallyConfiguration) {
          appendLine(this.stackTraceToString())
       }
 
-      lastError?.run {
+      lastError?.takeIf {
+         !config.includeFirst && firstError?.message != lastError?.message
+      }?.run {
          appendLine("The last error was caused by: ${this.message}")
          appendLine(this.stackTraceToString())
       }
